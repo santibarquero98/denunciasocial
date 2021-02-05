@@ -1,4 +1,4 @@
-package es.santiagobarquero.denunciasocial.api.controller.complaint;
+package es.santiagobarquero.denunciasocial.api.controller;
 
 import java.util.List;
 
@@ -23,8 +23,9 @@ public class ComplaintController implements ProjectRESTemplate<ComplaintDvo>{
 	
 	@Override
 	public ResponseEntity<List<ComplaintDvo>> getAlls() {
-		// TODO Auto-generated method stub
-		return null;
+		List<ComplaintDvo> result = complaintSrv.getAllsDvo(false);
+		return result == null ? new ResponseEntity<>(complaintSrv.getAllsDvo(false), HttpStatus.NO_CONTENT) :
+			new ResponseEntity<>(complaintSrv.getAllsDvo(false), HttpStatus.OK);
 	}
 
 	@Override

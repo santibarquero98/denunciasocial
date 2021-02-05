@@ -5,13 +5,13 @@ import java.util.List;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
 public class Utilities {
-
-	public static boolean isNull(Object obj) {
-		return obj == null ? true : false;
+	
+	private Utilities() {
+		// private constructor
 	}
 	
 	public static boolean isNullOrEmpty(String str) {
-		return isNull(str) || str.isEmpty() ? true : false;
+		return str == null || str.isEmpty() ? Boolean.TRUE.booleanValue() : Boolean.FALSE.booleanValue();
 	}
 	
 	public static String encryptPassword(String password) {
@@ -22,7 +22,7 @@ public class Utilities {
 	}
 	
 	public static boolean isNullOrEmpty(List<?> list) {
-		return isNull(list) || list.isEmpty() ? true : false;
+		return list == null || list.isEmpty() ? Boolean.TRUE.booleanValue() : Boolean.FALSE.booleanValue();
 	}
 	
 }

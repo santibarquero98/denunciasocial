@@ -41,4 +41,9 @@ public class TokenDvo implements IDvo<Token, TokenDvo>{
 		return new TokenDvo();
 	}
 
+	@Override
+	public String toString() {
+		return "TokenDvo [id=" + id + ", uuidToken=" + uuidToken + "]";
+	}
+
 }

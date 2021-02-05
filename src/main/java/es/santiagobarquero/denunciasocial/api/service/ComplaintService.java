@@ -23,15 +23,14 @@ public class ComplaintService implements ServiceInterface<ComplaintDvo, Complain
 	// !!!! SERVICE CLASS ONLY CAN INJECT THE REPOSITORY OF THE CLASS REPRESENTED !!!! //
 
 	@Override
-	public ComplaintDvo create(ComplaintDvo complaintDvo, boolean lazy) {
+	public ComplaintDvo create(ComplaintDvo complaintDvo, boolean lazy, boolean flushOnFinish) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void delete(ComplaintDvo complaintDvo) {
-		// TODO Auto-generated method stub
-
+	public void delete(ComplaintDvo complaintDvo, boolean flushOnFinish) {
+		complaintRepository.delete(complaintDvo.getEntityObject(false));
 	}
 
 	@Override
@@ -50,7 +49,7 @@ public class ComplaintService implements ServiceInterface<ComplaintDvo, Complain
 	}
 
 	@Override
-	public ComplaintDvo update(ComplaintDvo complaintDvo) {
+	public ComplaintDvo update(ComplaintDvo complaintDvo, boolean flushOnFinish) {
 		return complaintRepository.save(complaintDvo.getEntityObject(false)).getObjectView(false);
 	}
 

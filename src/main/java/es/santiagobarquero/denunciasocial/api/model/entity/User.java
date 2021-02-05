@@ -1,5 +1,9 @@
 package es.santiagobarquero.denunciasocial.api.model.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -7,11 +11,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import es.santiagobarquero.arch.structureproject.persistence.IEntity;
+import es.santiagobarquero.denunciasocial.api.dvo.PayrollDvo;
 import es.santiagobarquero.denunciasocial.api.dvo.UserDvo;
+import es.santiagobarquero.denunciasocial.auxiliary.DenunciasocialConstants;
 import es.santiagobarquero.denunciasocial.auxiliary.Utilities;
 /**
  * User entity persist info about a user
@@ -47,6 +54,9 @@ public class User implements IEntity<UserDvo, User> {
 	@OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_token")
 	private Token token;
+	
+	@OneToMany(mappedBy = "id", cascade = CascadeType.ALL,  fetch = FetchType.EAGER)
+    private List<Payroll> payrolls;
 
 	public Long getId() {
 		return id;
@@ -96,16 +106,35 @@ public class User implements IEntity<UserDvo, User> {
 		this.token = token;
 	}
 
+	public List<Payroll> getPayrolls() {
+		return payrolls;
+	}
+
+	public void setPayrolls(List<Payroll> payrolls) {
+		this.payrolls = payrolls;
+	}
+
 	@Override
 	public UserDvo getObjectView(boolean lazy) {
 		UserDvo userDvo = new UserDvo();
+		userDvo.setId(this.getId());
 		userDvo.setPassword(this.password);
 		userDvo.setUsername(this.username);
 		userDvo.setName(this.name);
 		userDvo.setActive(this.active);
 		if(lazy) {
-			if(!Utilities.isNull(getToken())) {
-				userDvo.setTokenDvo(getToken().getObjectView(false));
+			Token token = getToken();
+			if(token != null) {
+				userDvo.setTokenDvo(token.getObjectView(false));
+			}
+			
+			List<Payroll> payrolls = getPayrolls();
+			if(payrolls != null) {
+				List<PayrollDvo> payrollsDvo = new ArrayList<>(DenunciasocialConstants.ZERO);
+				for(Payroll p : payrolls) {
+					payrollsDvo.add(p.getObjectView(false));
+				}
+				userDvo.setPayrollsDvo(payrollsDvo);
 			}
 		}
 		return userDvo;

@@ -36,7 +36,7 @@ public class UserService implements ServiceInterface<UserDvo, User> {
 	public UserDvo createNewUser(UserDvo userDvo, boolean generateToken) {
 		UserDvo thisUserDvo = userDvo;
 		boolean thisGenerateToken = generateToken;
-		if(thisUserDvo == null || !Utilities.isNull(userRepository.getUserByUsername(thisUserDvo.getUsername()))) {
+		if(thisUserDvo == null || userRepository.getUserByUsername(thisUserDvo.getUsername()) != null) {
 			return thisUserDvo;
 		}
 		thisUserDvo.setActive(thisUserDvo.getActive());
@@ -44,24 +44,28 @@ public class UserService implements ServiceInterface<UserDvo, User> {
 		if(thisGenerateToken) {
 			thisUserDvo.setTokenDvo(tokenService.generate());
 		}
-		return create(thisUserDvo, true);
+		return create(thisUserDvo, true, false);
 	}
 	
 	@Transactional
 	@Override
-	public void delete(UserDvo userDvo) {
+	public void delete(UserDvo userDvo, boolean flushOnFinish) {
 		userRepository.delete(userDvo.getEntityObject(false));
 	}
 	
 	@Transactional
 	@Override
-	public UserDvo update(UserDvo userDvo) {
-		return userRepository.save(userDvo.getEntityObject(false)).getObjectView(false);
+	public UserDvo update(UserDvo userDvo, boolean flushOnFinish) {
+		UserDvo updatedUserDvo = userRepository.save(userDvo.getEntityObject(true)).getObjectView(true);
+		if(flushOnFinish) {
+			userRepository.flush();
+		}
+		return updatedUserDvo;
 	}
 	
 	@Transactional
 	@Override
-	public UserDvo create(UserDvo userDvo, boolean lazy) {
+	public UserDvo create(UserDvo userDvo, boolean lazy, boolean flushOnFinish) {
 		return userRepository.save(userDvo.getEntityObject(lazy)).getObjectView(lazy);
 	}
 	
@@ -97,7 +101,7 @@ public class UserService implements ServiceInterface<UserDvo, User> {
 	
 	public UserDvo findUserByUsername(String username) {
 		User user = userRepository.getUserByUsername(username);
-		if(Utilities.isNull(user)) {
+		if(user == null) {
 			return null;
 		}
 		
