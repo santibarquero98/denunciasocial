@@ -19,7 +19,6 @@ import es.santiagobarquero.arch.structureproject.persistence.IEntity;
 import es.santiagobarquero.denunciasocial.api.dvo.PayrollDvo;
 import es.santiagobarquero.denunciasocial.api.dvo.UserDvo;
 import es.santiagobarquero.denunciasocial.auxiliary.DenunciasocialConstants;
-import es.santiagobarquero.denunciasocial.auxiliary.Utilities;
 /**
  * User entity persist info about a user
  * 

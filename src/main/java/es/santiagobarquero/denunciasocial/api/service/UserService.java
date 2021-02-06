@@ -78,10 +78,10 @@ public class UserService implements ServiceInterface<UserDvo, User> {
 		List<User> allUsersList = userRepository.findAll();
 		
 		if(Utilities.isNullOrEmpty(allUsersList)) {
-			return new ArrayList<UserDvo>(DenunciasocialConstants.ZERO);
+			return new ArrayList<>(DenunciasocialConstants.ZERO);
 		}
 		
-		List<UserDvo> result = new ArrayList<UserDvo>(DenunciasocialConstants.ZERO);
+		List<UserDvo> result = new ArrayList<>(DenunciasocialConstants.ZERO);
 		for(User u : allUsersList) {
 			result.add(u.getObjectView(lazy));
 		}
@@ -89,11 +89,11 @@ public class UserService implements ServiceInterface<UserDvo, User> {
 	}
 	
 	@Override
-	public List<User> getAllsEntity() {
+	public List<User> getAllsEntity(boolean lazy) {
 		List<User> allUsersList = userRepository.findAll();
 		
 		if(Utilities.isNullOrEmpty(allUsersList)) {
-			return new ArrayList<User>(DenunciasocialConstants.ZERO);
+			return new ArrayList<>(DenunciasocialConstants.ZERO);
 		}
 		
 		return allUsersList;

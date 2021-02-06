@@ -1,32 +1,60 @@
 package es.santiagobarquero.denunciasocial.auxiliary;
-
+/**
+ * Description: LogAction class is a support class for log actions
+ * @author santi
+ * LogAction.java
+ */
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class LogAction {
 	
+	private LogAction() {
+		// empty constructor
+	}
+	
 	public static void debug(Class<?> clazz, String msg, Exception e) {
 		Logger logger = LoggerFactory.getLogger(clazz);
-		logger.debug(msg);
+		String msgException = DenunciasocialConstants.EMPTY_CHAIN;
+		if(e != null) {
+			msgException = e.getMessage();
+		}
+		logger.debug(formatMessage(msg, msgException));
 	}
 	
 	public static void info(Class<?> clazz, String msg, Exception e) {
-		Logger logger = LoggerFactory.getLogger(clazz);
-		logger.info(msg);
+		Logger logger = getLogger(clazz);
+		String msgException = DenunciasocialConstants.EMPTY_CHAIN;
+		if(e != null) {
+			msgException = e.getMessage();
+		}
+		logger.info(formatMessage(msg, msgException));
 	}
 	
 	public static void error(Class<?> clazz, String msg, Exception e) {
-		Logger logger = LoggerFactory.getLogger(clazz);
-		logger.error(msg);
+		Logger logger = getLogger(clazz);
+		String msgException = DenunciasocialConstants.EMPTY_CHAIN;
+		if(e != null) {
+			msgException = e.getMessage();
+		}
+		logger.error(formatMessage(msg, msgException));
 	}
 	
 	public static void warn(Class<?> clazz, String msg, Exception e) {
-		Logger logger = LoggerFactory.getLogger(clazz);
-		logger.warn(msg);
+		Logger logger = getLogger(clazz);
+		String msgException = DenunciasocialConstants.EMPTY_CHAIN;
+		if(e != null) {
+			msgException = e.getMessage();
+		}
+		logger.warn(formatMessage(msg, msgException));
 	}
 	
 	public static Logger getLogger(Class<?> clazz) {
 		return LoggerFactory.getLogger(clazz);
+	}
+	
+	private static String formatMessage(String msg, String msgException) {
+		return String.format("-- %s -- || Exception message is -> %s", msg, msgException);
 	}
 	
 

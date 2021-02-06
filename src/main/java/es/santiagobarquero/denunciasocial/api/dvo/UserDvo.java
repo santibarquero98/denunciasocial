@@ -10,7 +10,6 @@ import es.santiagobarquero.arch.structureproject.applayer.IDvo;
 import es.santiagobarquero.denunciasocial.api.model.entity.Payroll;
 import es.santiagobarquero.denunciasocial.api.model.entity.User;
 import es.santiagobarquero.denunciasocial.auxiliary.DenunciasocialConstants;
-import es.santiagobarquero.denunciasocial.auxiliary.Utilities;
 
 /**
  * UserDvo class defines the POJO from User entity (User Data View Object)

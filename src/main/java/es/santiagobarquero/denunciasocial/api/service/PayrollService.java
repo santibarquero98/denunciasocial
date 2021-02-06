@@ -54,7 +54,7 @@ public class PayrollService implements ServiceInterface<PayrollDvo, Payroll> {
 	}
 
 	@Override
-	public List<Payroll> getAllsEntity() {
+	public List<Payroll> getAllsEntity(boolean lazy) {
 		return payrollRepository.findAll();
 	}
 

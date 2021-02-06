@@ -49,25 +49,23 @@ public class AuditService implements ServiceInterface<Audit, Audit> {
 	}
 
 	@Override
-	public void delete(Audit arg0, boolean arg1) {
-		// TODO Auto-generated method stub
+	public void delete(Audit audit, boolean flushOnFinish) {
+		auditRepository.delete(audit);
 		
 	}
 
 	@Override
-	public List<Audit> getAllsDvo(boolean arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Audit> getAllsDvo(boolean lazy) {
+		return auditRepository.findAll();
 	}
 
 	@Override
-	public List<Audit> getAllsEntity() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Audit> getAllsEntity(boolean lazy) {
+		return getAllsDvo(lazy);
 	}
 
 	@Override
-	public Audit update(Audit arg0, boolean arg1) {
+	public Audit update(Audit audit, boolean flushOnFinish) {
 		// TODO Auto-generated method stub
 		return null;
 	}

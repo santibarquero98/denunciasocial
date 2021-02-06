@@ -77,7 +77,7 @@
 		<dependency>
 			<groupId>es.santiagobarquero</groupId>
 			<artifactId>structureproject</artifactId>
-			<version>1.1-RELEASE</version>
+			<version>1.2-RELEASE</version>
 			<scope>provided</scope>
 		</dependency>
 

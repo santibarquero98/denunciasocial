@@ -36,7 +36,7 @@ public class ComplaintService implements ServiceInterface<ComplaintDvo, Complain
 	@Override
 	public List<ComplaintDvo> getAllsDvo(boolean lazy) {
 		List<Complaint> resultDb = complaintRepository.findAll();
-		List<ComplaintDvo> resultDvo = new ArrayList<ComplaintDvo>(DenunciasocialConstants.ZERO);
+		List<ComplaintDvo> resultDvo = new ArrayList<>(DenunciasocialConstants.ZERO);
 		for(Complaint c : resultDb) {
 			resultDvo.add(c.getObjectView(lazy));
 		}
@@ -44,7 +44,7 @@ public class ComplaintService implements ServiceInterface<ComplaintDvo, Complain
 	}
 
 	@Override
-	public List<Complaint> getAllsEntity() {
+	public List<Complaint> getAllsEntity(boolean lazy) {
 		return complaintRepository.findAll();
 	}
 

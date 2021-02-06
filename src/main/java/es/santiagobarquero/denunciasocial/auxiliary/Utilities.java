@@ -1,5 +1,9 @@
 package es.santiagobarquero.denunciasocial.auxiliary;
-
+/**
+ * Description: Utilities class is a support class for simple actions in Java
+ * @author santi
+ * Utilities.java
+ */
 import java.util.List;
 
 import org.springframework.security.crypto.bcrypt.BCrypt;
