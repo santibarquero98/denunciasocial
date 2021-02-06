@@ -27,8 +27,7 @@ public class TokenService {
 		String uuid = UUID.randomUUID().toString();
 		Token token = new Token();
 		token.setUuidToken(uuid);
-		TokenDvo tokenDvo = tokenRepository.save(token).getObjectView(false);
-		return tokenDvo;
+		return tokenRepository.save(token).getObjectView(false);
 	}
 	
 	public boolean checkTokenUserRelation(String uuidToken, String username) {
@@ -37,7 +36,7 @@ public class TokenService {
 		UserDvo uDvo = userService.findUserByUsername(username);
 		if(uDvo == null) return false;
 		TokenDvo tDvo = t.getObjectView(false);
-		return uDvo.getTokenDvo().getUuidToken().equals(tDvo.getUuidToken()) ? true : false;
+		return uDvo.getTokenDvo().getUuidToken().equals(tDvo.getUuidToken()) ? Boolean.TRUE.booleanValue() : Boolean.FALSE.booleanValue();
 		
 	}
 	

@@ -41,7 +41,7 @@ public class PayrollService implements ServiceInterface<PayrollDvo, Payroll> {
 	@Override
 	public List<PayrollDvo> getAllsDvo(boolean lazy) {
 		List<Payroll> result = payrollRepository.findAll();
-		List<PayrollDvo> returnValue = new ArrayList<PayrollDvo>(DenunciasocialConstants.ZERO);
+		List<PayrollDvo> returnValue = new ArrayList<>(DenunciasocialConstants.ZERO);
 		if(Utilities.isNullOrEmpty(result)) {
 			return returnValue;
 		}
