@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonRootName;
 
 import es.santiagobarquero.arch.structureproject.applayer.IDvo;
 import es.santiagobarquero.denunciasocial.api.model.entity.Payroll;
@@ -17,7 +18,7 @@ import es.santiagobarquero.denunciasocial.auxiliary.DenunciasocialConstants;
  * @author santi
  *
  */
-
+@JsonRootName("userDvo")
 public class UserDvo implements IDvo<User, UserDvo> {
 	
 	@JsonIgnore

@@ -133,7 +133,7 @@ public class UserController implements ProjectRESTemplate<UserDvo> {
 	
 	@GetMapping(path = "/alls")
 	public ResponseEntity<List<UserDvo>> getAlls() {
-		List<UserDvo> result = userSrv.getAllsDvo(false);
+		List<UserDvo> result = userSrv.getAllsDvo(true);
 		return new ResponseEntity<>(result, HttpStatus.OK);
 	}
 	

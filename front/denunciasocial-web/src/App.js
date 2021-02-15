@@ -7,9 +7,10 @@ import MainbodyComponent from './components/MainbodyComponentFolder/MainbodyComp
 function App() {
   return (
     <div className="App">
-      <header className="Header">
         <HeaderComponent/>
-      </header>
+        <div>
+          
+        </div>
     </div>
   );
 }

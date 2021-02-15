@@ -3,7 +3,10 @@ package es.santiagobarquero.denunciasocial.api.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import es.santiagobarquero.arch.structureproject.applayer.ServiceInterface;
 import es.santiagobarquero.denunciasocial.api.dvo.PayrollDvo;
@@ -12,6 +15,7 @@ import es.santiagobarquero.denunciasocial.api.model.repository.PayrollRepository
 import es.santiagobarquero.denunciasocial.auxiliary.DenunciasocialConstants;
 import es.santiagobarquero.denunciasocial.auxiliary.Utilities;
 
+@Service
 public class PayrollService implements ServiceInterface<PayrollDvo, Payroll> {
 
 	// !!!! SERVICE CLASS ONLY CAN INJECT THE REPOSITORY OF THE CLASS REPRESENTED !!!! //
@@ -21,6 +25,7 @@ public class PayrollService implements ServiceInterface<PayrollDvo, Payroll> {
 	
 	// !!!! SERVICE CLASS ONLY CAN INJECT THE REPOSITORY OF THE CLASS REPRESENTED !!!! //
 
+	@Transactional
 	@Override
 	public PayrollDvo create(PayrollDvo payrollDvo, boolean lazy, boolean flushOnFinish) {
 		PayrollDvo thisPayrollDvo = payrollDvo;
@@ -29,7 +34,8 @@ public class PayrollService implements ServiceInterface<PayrollDvo, Payroll> {
 		if(flushOnFinish) payrollRepository.flush();
 		return thisPayrollDvo;
 	}
-
+	
+	@Transactional
 	@Override
 	public void delete(PayrollDvo payrollDvo, boolean flushOnFinish) {
 		Payroll payrollToDelete = payrollDvo.getEntityObject(true);
@@ -37,7 +43,7 @@ public class PayrollService implements ServiceInterface<PayrollDvo, Payroll> {
 		if(flushOnFinish) payrollRepository.flush();
 		
 	}
-
+	
 	@Override
 	public List<PayrollDvo> getAllsDvo(boolean lazy) {
 		List<Payroll> result = payrollRepository.findAll();
@@ -57,7 +63,8 @@ public class PayrollService implements ServiceInterface<PayrollDvo, Payroll> {
 	public List<Payroll> getAllsEntity(boolean lazy) {
 		return payrollRepository.findAll();
 	}
-
+	
+	@Transactional
 	@Override
 	public PayrollDvo update(PayrollDvo payrollDvo, boolean flushOnFinish) {
 		PayrollDvo thisPayrollDvo = payrollDvo;
