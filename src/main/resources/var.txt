@@ -1,5 +1,0 @@
-spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
-spring.datasource.password=root
-spring.datasource.url=jdbc:mariadb://192.168.18.25:3306/denunciasocial
-spring.datasource.username=root
-spring.jpa.hibernate.ddl-auto=update
