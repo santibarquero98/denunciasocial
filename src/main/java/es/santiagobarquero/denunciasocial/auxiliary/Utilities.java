@@ -5,13 +5,39 @@ package es.santiagobarquero.denunciasocial.auxiliary;
  * Utilities.java
  */
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.springframework.security.crypto.bcrypt.BCrypt;
+
+import es.santiagobarquero.denunciasocial.api.service.TokenService;
 
 public class Utilities {
 	
 	private Utilities() {
 		// private constructor
+	}
+	
+	public static boolean requestIsAuth(Map<String, String> headers, TokenService tokenService) {
+		String[] auth = Utilities.findCredentialsInHeader(headers);
+		return tokenService.checkTokenUserRelation(auth[1], auth[0]);
+	}
+	
+	public static String[] findCredentialsInHeader(Map<String, String> headers) {
+		String[] result = new String[2];
+		for(Entry<String, String> entry : headers.entrySet()) {
+			String key = entry.getKey();
+			String value = entry.getValue();
+			if(AppHeaders.HUSERNAME_HEADER.equals(key)) {
+				result[0] = value;
+				continue;
+			}
+			if(AppHeaders.HTOKEN_HEADER.equals(key)) {
+				result[1] = value;
+				break;
+			}
+		}
+		return result;
 	}
 	
 	public static boolean isNullOrEmpty(String str) {

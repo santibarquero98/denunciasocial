@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import es.santiagobarquero.arch.structureproject.applayer.ProjectRESTemplate;
 import es.santiagobarquero.denunciasocial.api.dvo.TokenDvo;
@@ -32,11 +31,10 @@ import es.santiagobarquero.denunciasocial.auxiliary.AppHeaders;
 import es.santiagobarquero.denunciasocial.auxiliary.LogAction;
 import es.santiagobarquero.denunciasocial.auxiliary.Utilities;
 
-@RestController
 @RequestMapping("/rest/user")
 public class UserController implements ProjectRESTemplate<UserDvo> {
 	
-    Logger logger = null;
+    private Logger logger = null;
 	
 	@Autowired
 	private UserService userSrv;

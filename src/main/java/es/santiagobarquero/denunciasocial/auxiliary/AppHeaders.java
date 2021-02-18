@@ -11,5 +11,5 @@ public class AppHeaders {
 	}
 
 	public static final String HUSERNAME_HEADER = "h-username";
-	
+	public static final String HTOKEN_HEADER = "h_token";
 }
