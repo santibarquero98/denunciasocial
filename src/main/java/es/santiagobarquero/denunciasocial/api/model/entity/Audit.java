@@ -17,7 +17,7 @@ import es.santiagobarquero.arch.structureproject.persistence.IEntity;
  */
 
 @Entity
-@Table(name = "audit")
+@Table(name = "TB_AUDIT_AUDIT")
 public class Audit implements IEntity<Object, Audit> {
 	
 	public Audit() {
@@ -28,22 +28,22 @@ public class Audit implements IEntity<Object, Audit> {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "host", length = 15)
+	@Column(name = "HOST", length = 15)
 	private String host;
 	
-	@Column(name = "request", length = 500)
+	@Column(name = "REQUEST", length = 500)
 	private String request;
 	
-	@Column(name = "response", length = 500)
+	@Column(name = "RESPONSE", length = 500)
 	private String response;
 	
-	@Column(name = "url_service", length = 100)
+	@Column(name = "URL_SERVICE", length = 100)
 	private String urlService;
 	
-	@Column(name = "status", length = 2)
+	@Column(name = "STATUS", length = 2)
 	private String status;
 	
-	@Column(name = "communication_type", length = 3)
+	@Column(name = "COMMUNICATION_TYPE", length = 3)
 	private String communicationType;
 	
 

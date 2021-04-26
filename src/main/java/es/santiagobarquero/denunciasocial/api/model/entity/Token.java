@@ -15,7 +15,7 @@ import es.santiagobarquero.denunciasocial.api.dvo.TokenDvo;
 
 
 @Entity
-@Table(name = "tokens")
+@Table(name = "TB_TOKEN")
 public class Token implements IEntity<TokenDvo, Token> {
 
 	public Token() {
@@ -24,13 +24,14 @@ public class Token implements IEntity<TokenDvo, Token> {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ID_TOKEN")
 	private Long id;
 	
-	@Column(name = "uuid_token", length = 100)
+	@Column(name = "UUID_TOKEN", length = 100)
 	private String uuidToken;
 	
 	@OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_user")
+    @JoinColumn(name = "ID_USER")
 	private User user;
 	
 	public Long getId() {

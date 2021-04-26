@@ -1,9 +1,8 @@
 package es.santiagobarquero.denunciasocial.api.model.entity;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.text.ParseException;
+import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,14 +10,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.slf4j.Logger;
 
 import es.santiagobarquero.arch.structureproject.persistence.IEntity;
-import es.santiagobarquero.denunciasocial.api.dvo.PayrollDvo;
 import es.santiagobarquero.denunciasocial.api.dvo.UserDvo;
-import es.santiagobarquero.denunciasocial.auxiliary.DenunciasocialConstants;
+import es.santiagobarquero.denunciasocial.auxiliary.ArtroponetConstants;
+import es.santiagobarquero.denunciasocial.auxiliary.LogAction;
+import es.santiagobarquero.denunciasocial.auxiliary.Utilities;
 /**
  * User entity persist info about a user
  * 
@@ -36,26 +39,29 @@ public class User implements IEntity<UserDvo, User> {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ID_USER")
 	private Long id;
 
-	@Column(name = "username", length = 50)
+	@Column(name = "USERNAME", length = 50)
 	private String username;
 
-	@Column(name = "password", length = 100)
+	@Column(name = "PASSWORD", length = 100)
 	private String password;
 
-	@Column(name = "name", length = 50)
+	@Column(name = "NAME", length = 50)
 	private String name;
 
-	@Column(name = "active", length = 2)
+	@Column(name = "ACTIVE", length = 2)
 	private int active;
 	
-	@OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_token")
-	private Token token;
+	@Column(name = "DAT_UP", nullable = false)
+	@Temporal(TemporalType.TIME)
+	private Date datUp;
+
 	
-	@OneToMany(mappedBy = "id", cascade = CascadeType.ALL,  fetch = FetchType.EAGER)
-    private List<Payroll> payrolls;
+	@OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "ID_TOKEN")
+	private Token token;
 
 	public Long getId() {
 		return id;
@@ -105,37 +111,35 @@ public class User implements IEntity<UserDvo, User> {
 		this.token = token;
 	}
 
-	public List<Payroll> getPayrolls() {
-		return payrolls;
+	public Date getDatUp() {
+		return datUp;
 	}
 
-	public void setPayrolls(List<Payroll> payrolls) {
-		this.payrolls = payrolls;
+	public void setDatUp(Date datUp) {
+		this.datUp = datUp;
 	}
 
 	@Override
 	public UserDvo getObjectView(boolean lazy) {
+		Logger logger = LogAction.getLogger(User.class);
 		UserDvo userDvo = new UserDvo();
 		userDvo.setId(this.getId());
 		userDvo.setPassword(this.password);
 		userDvo.setUsername(this.username);
 		userDvo.setName(this.name);
 		userDvo.setActive(this.active);
+		try {
+			userDvo.setDatUp(Utilities.stringToDate(this.datUp, ArtroponetConstants.STANDARD_PROJECT_DATE));
+		} catch (ParseException e) {
+			logger.info(String.format("Error to convert stringToDate: -> %s", e.getLocalizedMessage()), e);
+		}
 		if(lazy) {
 			Token token = getToken();
 			if(token != null) {
 				userDvo.setTokenDvo(token.getObjectView(false));
 			}
-			
-			List<Payroll> payrolls = getPayrolls();
-			if(payrolls != null) {
-				List<PayrollDvo> payrollsDvo = new ArrayList<>(DenunciasocialConstants.ZERO);
-				for(Payroll p : payrolls) {
-					payrollsDvo.add(p.getObjectView(false));
-				}
-				userDvo.setPayrollsDvo(payrollsDvo);
-			}
 		}
+		logger = null;
 		return userDvo;
 	}
 

@@ -1,6 +1,7 @@
 package es.santiagobarquero.denunciasocial.api.dvo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import es.santiagobarquero.arch.structureproject.applayer.IDvo;
 import es.santiagobarquero.denunciasocial.api.model.entity.Token;
@@ -10,6 +11,7 @@ public class TokenDvo implements IDvo<Token, TokenDvo>{
 	@JsonIgnore
 	private Long id;
 	
+	@JsonProperty("uuidtoken")
 	private String uuidToken;
 
 	public Long getId() {

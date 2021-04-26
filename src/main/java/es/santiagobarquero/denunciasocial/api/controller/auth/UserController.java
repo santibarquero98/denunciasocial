@@ -36,7 +36,7 @@ import es.santiagobarquero.denunciasocial.auxiliary.Utilities;
 @RequestMapping("/rest/user")
 public class UserController implements ProjectRESTemplate<UserDvo> {
 	
-    Logger logger = null;
+    private Logger logger = null;
 	
 	@Autowired
 	private UserService userSrv;

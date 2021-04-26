@@ -15,7 +15,7 @@ public class LogAction {
 	
 	public static void debug(Class<?> clazz, String msg, Exception e) {
 		Logger logger = LoggerFactory.getLogger(clazz);
-		String msgException = DenunciasocialConstants.EMPTY_CHAIN;
+		String msgException = ArtroponetConstants.EMPTY_CHAIN;
 		if(e != null) {
 			msgException = e.getMessage();
 		}
@@ -24,7 +24,7 @@ public class LogAction {
 	
 	public static void info(Class<?> clazz, String msg, Exception e) {
 		Logger logger = getLogger(clazz);
-		String msgException = DenunciasocialConstants.EMPTY_CHAIN;
+		String msgException = ArtroponetConstants.EMPTY_CHAIN;
 		if(e != null) {
 			msgException = e.getMessage();
 		}
@@ -33,7 +33,7 @@ public class LogAction {
 	
 	public static void error(Class<?> clazz, String msg, Exception e) {
 		Logger logger = getLogger(clazz);
-		String msgException = DenunciasocialConstants.EMPTY_CHAIN;
+		String msgException = ArtroponetConstants.EMPTY_CHAIN;
 		if(e != null) {
 			msgException = e.getMessage();
 		}
@@ -42,7 +42,7 @@ public class LogAction {
 	
 	public static void warn(Class<?> clazz, String msg, Exception e) {
 		Logger logger = getLogger(clazz);
-		String msgException = DenunciasocialConstants.EMPTY_CHAIN;
+		String msgException = ArtroponetConstants.EMPTY_CHAIN;
 		if(e != null) {
 			msgException = e.getMessage();
 		}

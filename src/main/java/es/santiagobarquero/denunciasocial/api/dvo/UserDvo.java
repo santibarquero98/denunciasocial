@@ -1,16 +1,18 @@
 package es.santiagobarquero.denunciasocial.api.dvo;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.text.ParseException;
+
+import org.slf4j.Logger;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import es.santiagobarquero.arch.structureproject.applayer.IDvo;
-import es.santiagobarquero.denunciasocial.api.model.entity.Payroll;
 import es.santiagobarquero.denunciasocial.api.model.entity.User;
-import es.santiagobarquero.denunciasocial.auxiliary.DenunciasocialConstants;
+import es.santiagobarquero.denunciasocial.auxiliary.ArtroponetConstants;
+import es.santiagobarquero.denunciasocial.auxiliary.LogAction;
+import es.santiagobarquero.denunciasocial.auxiliary.Utilities;
 
 /**
  * UserDvo class defines the POJO from User entity (User Data View Object)
@@ -39,8 +41,8 @@ public class UserDvo implements IDvo<User, UserDvo> {
 	@JsonProperty("token")
 	private TokenDvo tokenDvo;
 	
-	@JsonProperty("payrolls")
-	private List<PayrollDvo> payrollsDvo;
+	@JsonProperty("datUp")
+	private String datUp;
 
 	public UserDvo() {
 		// empty constructor
@@ -98,43 +100,42 @@ public class UserDvo implements IDvo<User, UserDvo> {
 		this.tokenDvo = tokenDvo;
 	}
 
-	public List<PayrollDvo> getPayrollsDvo() {
-		return payrollsDvo;
+	public String getDatUp() {
+		return datUp;
 	}
 
-	public void setPayrollsDvo(List<PayrollDvo> payrollsDvo) {
-		this.payrollsDvo = payrollsDvo;
+
+	public void setDatUp(String datUp) {
+		this.datUp = datUp;
 	}
-	
 
 	/*
 	 * METHODS
 	 */
 
+
 	@Override
 	public User getEntityObject(boolean lazy) {
+		Logger logger = LogAction.getLogger(UserDvo.class);
 		User user = new User();
 		user.setId(this.id);
 		user.setUsername(this.username);
 		user.setPassword(this.password);
 		user.setName(this.name);
 		user.setActive(this.active);
+		try {
+			user.setDatUp(Utilities.dateToString(this.datUp, ArtroponetConstants.STANDARD_PROJECT_DATE));
+		} catch (ParseException e) {
+			logger.info(String.format("Error to convert stringToDate: -> %s", e.getLocalizedMessage()), e);
+		}
 		if(lazy) {
 			
 			TokenDvo tokenDvo = getTokenDvo();
 			if(tokenDvo != null) {
 				user.setToken(tokenDvo.getEntityObject(false));
 			}
-			
-			List<PayrollDvo> payrollsDvo = getPayrollsDvo();
-			if(payrollsDvo != null) {
-				List<Payroll> payrolls = new ArrayList<>(DenunciasocialConstants.ZERO);
-				for(PayrollDvo p : this.payrollsDvo) {
-					payrolls.add(p.getEntityObject(false));
-				}
-				user.setPayrolls(payrolls);
-			}
 		}
+		logger = null;
 		return user;
 	}
 

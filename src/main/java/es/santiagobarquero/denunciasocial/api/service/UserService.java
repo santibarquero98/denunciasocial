@@ -12,7 +12,7 @@ import es.santiagobarquero.arch.structureproject.applayer.ServiceInterface;
 import es.santiagobarquero.denunciasocial.api.dvo.UserDvo;
 import es.santiagobarquero.denunciasocial.api.model.entity.User;
 import es.santiagobarquero.denunciasocial.api.model.repository.UserRepository;
-import es.santiagobarquero.denunciasocial.auxiliary.DenunciasocialConstants;
+import es.santiagobarquero.denunciasocial.auxiliary.ArtroponetConstants;
 import es.santiagobarquero.denunciasocial.auxiliary.Utilities;
 
 @Service
@@ -78,10 +78,10 @@ public class UserService implements ServiceInterface<UserDvo, User> {
 		List<User> allUsersList = userRepository.findAll();
 		
 		if(Utilities.isNullOrEmpty(allUsersList)) {
-			return new ArrayList<>(DenunciasocialConstants.ZERO);
+			return new ArrayList<>(ArtroponetConstants.ZERO);
 		}
 		
-		List<UserDvo> result = new ArrayList<>(DenunciasocialConstants.ZERO);
+		List<UserDvo> result = new ArrayList<>(ArtroponetConstants.ZERO);
 		for(User u : allUsersList) {
 			result.add(u.getObjectView(lazy));
 		}
@@ -93,7 +93,7 @@ public class UserService implements ServiceInterface<UserDvo, User> {
 		List<User> allUsersList = userRepository.findAll();
 		
 		if(Utilities.isNullOrEmpty(allUsersList)) {
-			return new ArrayList<>(DenunciasocialConstants.ZERO);
+			return new ArrayList<>(ArtroponetConstants.ZERO);
 		}
 		
 		return allUsersList;
