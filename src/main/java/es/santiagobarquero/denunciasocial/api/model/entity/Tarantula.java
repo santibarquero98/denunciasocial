@@ -13,7 +13,7 @@ import es.santiagobarquero.arch.structureproject.persistence.IEntity;
 import es.santiagobarquero.denunciasocial.api.dvo.TarantulaDvo;
 
 @Entity
-@Table(name = "TB_TARANTULA")
+@Table(name = "tb_tarantulas")
 public class Tarantula implements IEntity<TarantulaDvo, Tarantula> {
 	
 	public Tarantula() {
@@ -22,6 +22,7 @@ public class Tarantula implements IEntity<TarantulaDvo, Tarantula> {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ID_TARANTULA")
 	private Long idTarantula;
 	
 	@Column(name = "NOM_COMUN")
@@ -34,7 +35,8 @@ public class Tarantula implements IEntity<TarantulaDvo, Tarantula> {
     @JoinColumn(name = "ID_GENDER")
 	private Gender gender;
 	
-	// RELATION
+	@ManyToOne()
+    @JoinColumn(name = "ID_USER")
 	private User user;
 
 	public Long getIdTarantula() {
@@ -76,6 +78,8 @@ public class Tarantula implements IEntity<TarantulaDvo, Tarantula> {
 	public void setUser(User user) {
 		this.user = user;
 	}
+	
+	
 
 	@Override
 	public Tarantula createNew() {
@@ -83,9 +87,9 @@ public class Tarantula implements IEntity<TarantulaDvo, Tarantula> {
 	}
 
 	@Override
-	public TarantulaDvo getObjectView(boolean arg0) {
-		// TODO Auto-generated method stub
-		return null;
+	public TarantulaDvo getObjectView(boolean lazy) {
+		TarantulaDvo tarantulaDvo = new TarantulaDvo();
+		return tarantulaDvo;
 	}
 	
 }

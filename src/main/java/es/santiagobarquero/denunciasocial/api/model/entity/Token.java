@@ -15,7 +15,7 @@ import es.santiagobarquero.denunciasocial.api.dvo.TokenDvo;
 
 
 @Entity
-@Table(name = "TB_TOKEN")
+@Table(name = "tb_tokens")
 public class Token implements IEntity<TokenDvo, Token> {
 
 	public Token() {

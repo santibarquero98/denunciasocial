@@ -1,8 +1,11 @@
 package es.santiagobarquero.denunciasocial.api.model.entity;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -10,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -18,6 +22,8 @@ import javax.persistence.TemporalType;
 import org.slf4j.Logger;
 
 import es.santiagobarquero.arch.structureproject.persistence.IEntity;
+import es.santiagobarquero.denunciasocial.api.dvo.GalleryDvo;
+import es.santiagobarquero.denunciasocial.api.dvo.TarantulaDvo;
 import es.santiagobarquero.denunciasocial.api.dvo.UserDvo;
 import es.santiagobarquero.denunciasocial.auxiliary.ArtroponetConstants;
 import es.santiagobarquero.denunciasocial.auxiliary.LogAction;
@@ -30,7 +36,7 @@ import es.santiagobarquero.denunciasocial.auxiliary.Utilities;
  */
 
 @Entity
-@Table(name = "users")
+@Table(name = "tb_users")
 public class User implements IEntity<UserDvo, User> {
 
 	public User() {
@@ -62,6 +68,20 @@ public class User implements IEntity<UserDvo, User> {
 	@OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_TOKEN")
 	private Token token;
+	
+	@OneToMany(mappedBy = "idTarantula", cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
+    private List<Tarantula> tarantulas;
+	
+	@OneToMany(mappedBy = "idGallery", cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
+    private List<Gallery> galleries;
+
+	public List<Tarantula> getTarantulas() {
+		return tarantulas;
+	}
+
+	public void setTarantulas(List<Tarantula> tarantulas) {
+		this.tarantulas = tarantulas;
+	}
 
 	public Long getId() {
 		return id;
@@ -119,9 +139,16 @@ public class User implements IEntity<UserDvo, User> {
 		this.datUp = datUp;
 	}
 
+	public List<Gallery> getGalleries() {
+		return galleries;
+	}
+
+	public void setGalleries(List<Gallery> galleries) {
+		this.galleries = galleries;
+	}
+
 	@Override
 	public UserDvo getObjectView(boolean lazy) {
-		Logger logger = LogAction.getLogger(User.class);
 		UserDvo userDvo = new UserDvo();
 		userDvo.setId(this.getId());
 		userDvo.setPassword(this.password);
@@ -129,17 +156,41 @@ public class User implements IEntity<UserDvo, User> {
 		userDvo.setName(this.name);
 		userDvo.setActive(this.active);
 		try {
-			userDvo.setDatUp(Utilities.stringToDate(this.datUp, ArtroponetConstants.STANDARD_PROJECT_DATE));
+			Date datUp = getDatUp();
+			if(datUp != null) {
+				userDvo.setDatUp(Utilities.dateToString(datUp, ArtroponetConstants.STANDARD_PROJECT_DATE));
+			}
 		} catch (ParseException e) {
+			Logger logger = LogAction.getLogger(User.class);
 			logger.info(String.format("Error to convert stringToDate: -> %s", e.getLocalizedMessage()), e);
+			logger = null;
 		}
+		
 		if(lazy) {
 			Token token = getToken();
 			if(token != null) {
 				userDvo.setTokenDvo(token.getObjectView(false));
 			}
+			
+			List<Tarantula> tarantulas = getTarantulas();
+			if(!Utilities.isNullOrEmpty(tarantulas)) {
+				List<TarantulaDvo> tarantulasDvo = new ArrayList<>(ArtroponetConstants.ZERO);
+				for(Tarantula t : tarantulas) {
+					tarantulasDvo.add(t.getObjectView(false));
+				}
+				userDvo.setTarantulasDvo(tarantulasDvo);
+			}
+			
+			List<Gallery> galleries = getGalleries();
+			if(!Utilities.isNullOrEmpty(galleries)) {
+				List<GalleryDvo> galleriesDvo = new ArrayList<>(ArtroponetConstants.ZERO);
+				for(Gallery g : galleries) {
+					galleriesDvo.add(g.getObjectView(false));
+				}
+				userDvo.setGalleriesDvo(galleriesDvo);
+			}
+			
 		}
-		logger = null;
 		return userDvo;
 	}
 

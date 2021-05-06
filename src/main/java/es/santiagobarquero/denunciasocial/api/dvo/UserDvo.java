@@ -1,6 +1,8 @@
 package es.santiagobarquero.denunciasocial.api.dvo;
 
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 
@@ -9,6 +11,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonRootName;
 
 import es.santiagobarquero.arch.structureproject.applayer.IDvo;
+import es.santiagobarquero.denunciasocial.api.model.entity.Gallery;
+import es.santiagobarquero.denunciasocial.api.model.entity.Tarantula;
 import es.santiagobarquero.denunciasocial.api.model.entity.User;
 import es.santiagobarquero.denunciasocial.auxiliary.ArtroponetConstants;
 import es.santiagobarquero.denunciasocial.auxiliary.LogAction;
@@ -43,6 +47,10 @@ public class UserDvo implements IDvo<User, UserDvo> {
 	
 	@JsonProperty("datUp")
 	private String datUp;
+	
+	private List<TarantulaDvo> tarantulasDvo;
+	
+	private List<GalleryDvo> galleriesDvo;
 
 	public UserDvo() {
 		// empty constructor
@@ -109,6 +117,27 @@ public class UserDvo implements IDvo<User, UserDvo> {
 		this.datUp = datUp;
 	}
 
+
+	public List<TarantulaDvo> getTarantulasDvo() {
+		return tarantulasDvo;
+	}
+
+
+	public void setTarantulasDvo(List<TarantulaDvo> tarantulasDvo) {
+		this.tarantulasDvo = tarantulasDvo;
+	}
+
+	public List<GalleryDvo> getGalleriesDvo() {
+		return galleriesDvo;
+	}
+
+
+	public void setGalleriesDvo(List<GalleryDvo> galleriesDvo) {
+		this.galleriesDvo = galleriesDvo;
+	}
+	
+	
+
 	/*
 	 * METHODS
 	 */
@@ -124,15 +153,33 @@ public class UserDvo implements IDvo<User, UserDvo> {
 		user.setName(this.name);
 		user.setActive(this.active);
 		try {
-			user.setDatUp(Utilities.dateToString(this.datUp, ArtroponetConstants.STANDARD_PROJECT_DATE));
+			String datUp = getDatUp();
+			user.setDatUp(Utilities.stringToDate(datUp, ArtroponetConstants.STANDARD_PROJECT_DATE));
 		} catch (ParseException e) {
 			logger.info(String.format("Error to convert stringToDate: -> %s", e.getLocalizedMessage()), e);
 		}
 		if(lazy) {
-			
 			TokenDvo tokenDvo = getTokenDvo();
 			if(tokenDvo != null) {
 				user.setToken(tokenDvo.getEntityObject(false));
+			}
+			
+			List<TarantulaDvo> tarantulasDvo = getTarantulasDvo();
+			if(!Utilities.isNullOrEmpty(tarantulasDvo)) {
+				List<Tarantula> tarantulas = new ArrayList<>(ArtroponetConstants.ZERO);
+				for(TarantulaDvo tDvo : tarantulasDvo) {
+					tarantulas.add(tDvo.getEntityObject(false));
+				}
+				user.setTarantulas(tarantulas);
+			}
+			
+			List<GalleryDvo> galleriesDvo = getGalleriesDvo();
+			if(!Utilities.isNullOrEmpty(galleriesDvo)) {
+				List<Gallery> galleries = new ArrayList<>(ArtroponetConstants.ZERO);
+				for(GalleryDvo gDvo : galleriesDvo) {
+					galleries.add(gDvo.getEntityObject(false));
+				}
+				user.setGalleries(galleries);
 			}
 		}
 		logger = null;

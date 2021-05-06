@@ -1,6 +1,7 @@
 package es.santiagobarquero.denunciasocial.api.controller.auth;
 
 import java.net.InetSocketAddress;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -12,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +31,8 @@ import es.santiagobarquero.denunciasocial.api.service.UserService;
 import es.santiagobarquero.denunciasocial.auxiliary.AppHeaders;
 import es.santiagobarquero.denunciasocial.auxiliary.LogAction;
 import es.santiagobarquero.denunciasocial.auxiliary.Utilities;
+import es.santiagobarquero.denunciasocial.auxiliary.exceptions.FailLoginException;
+import es.santiagobarquero.denunciasocial.auxiliary.exceptions.NotImplementedException;
 
 @RestController
 @RequestMapping("/rest/user")
@@ -52,48 +54,29 @@ public class UserController implements ProjectRESTemplate<UserDvo> {
 		logger = LogAction.getLogger(UserController.class);
 	}
 	
-	@RequestMapping("/")
+	@GetMapping("/")
 	public HttpStatus throwResponse(@RequestHeader HttpHeaders reqHeader) {
 		InetSocketAddress inetSocket = reqHeader.getHost();
-		if(inetSocket != null && inetSocket.getAddress() != null) {
-			auditSrv.audit(inetSocket.getAddress().getHostAddress(), null, "OK", "/rest/user/", "OK", "IN");
+		String hostname = inetSocket.getHostName();
+		if(!Utilities.isNullOrBlank(hostname)) {
+			try {
+				auditSrv.auditGetRequest(hostname, "/rest/user/", true);
+			} catch (NotImplementedException e) {
+				return HttpStatus.INTERNAL_SERVER_ERROR;
+			}
 		}
 		return HttpStatus.OK;
 	}
 	
 	@PostMapping("/dologin")
 	public ResponseEntity<TokenDvo> doLogin(@RequestBody UserDvo reqUserDvo) {
-		String username = reqUserDvo.getUsername();
-		String password = reqUserDvo.getPassword();
-		logger.info(String.format("%s is trying to login --", username));
-		UserDvo userDvo = userSrv.findUserByUsername(username);
-		if(userDvo == null) {
-			logger.info(String.format("-- Login KO for %s --", username));
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		TokenDvo result = null;
+		try {
+			result = userSrv.doLogin(reqUserDvo.getUsername(), reqUserDvo.getPassword());
+			return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
+		} catch (FailLoginException e) {
+			return new ResponseEntity<>(result, e.getHttpStatus());
 		}
-		
-		boolean okCredentials = BCrypt.checkpw(password, userDvo.getPassword());
-		
-		if(okCredentials) {
-			TokenDvo oldToken = userDvo.getTokenDvo();
-			// Generate a new token for the next auths
-			TokenDvo newToken = tokenSrv.generate();
-			logger.info(String.format("-- Login OK for %s --", username));
-			logger.info(String.format("-- The old token is -> %s --", userDvo.getTokenDvo().getUuidToken()));
-			logger.info(String.format("-- The new token is -> %s --", newToken.getUuidToken()));
-			userDvo.setTokenDvo(newToken);
-			userDvo = userSrv.update(userDvo, true);
-			logger.info("-- Token updated --");
-
-			// Delete the old token
-			tokenSrv.delete(oldToken);
-			logger.info("-- Old token has been removed --");
-			return new ResponseEntity<>(userDvo.getTokenDvo(), HttpStatus.ACCEPTED);
-		} else {
-			logger.info(String.format("-- Login KO for %s --", username));
-			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-		}
-		
 	}
 	
 	@PostMapping("/isAuth")
@@ -108,12 +91,10 @@ public class UserController implements ProjectRESTemplate<UserDvo> {
 				break;
 			}
 		}
-		
-		if(Utilities.isNullOrEmpty(usernameHeader)) {
+		if(Utilities.isNullOrBlank(usernameHeader)) {
 			logger.warn("-- The username is null --");
 			return HttpStatus.NO_CONTENT;
 		}
-		
 		boolean isAuth = tokenSrv.checkTokenUserRelation(uuidToken, usernameHeader);
 		if(isAuth) {
 			logger.info("-- User auth OK --");
@@ -126,7 +107,12 @@ public class UserController implements ProjectRESTemplate<UserDvo> {
 	@PostMapping("/add")
 	public HttpStatus add(@RequestBody UserDvo reqUserDvo) {
 		logger.info(String.format("-- Adding the user -> %s", reqUserDvo.getUsername()));
-		userSrv.createNewUser(reqUserDvo, Boolean.TRUE);
+		try {
+			userSrv.createNewUser(reqUserDvo, Boolean.TRUE);
+		} catch (ParseException e) {
+			logger.info(String.format("Error to convert stringToDate: -> %s", e.getLocalizedMessage()), e);
+			return HttpStatus.INTERNAL_SERVER_ERROR;
+		}
 		logger.info("-- Created --");
 		return HttpStatus.CREATED;
 	}
@@ -145,7 +131,7 @@ public class UserController implements ProjectRESTemplate<UserDvo> {
 		}
 		String username = reqUserDvo.getUsername();
 		logger.info(String.format("-- Removing the user -> %s --", username));
-		if(Utilities.isNullOrEmpty(username)) {
+		if(Utilities.isNullOrBlank(username)) {
 			logger.warn("-- The username is null --");
 			return HttpStatus.NO_CONTENT;
 		}
@@ -163,7 +149,7 @@ public class UserController implements ProjectRESTemplate<UserDvo> {
 			return new ResponseEntity<>(reqUserDvo, HttpStatus.NO_CONTENT);
 		}
 		String username = reqUserDvo.getUsername();
-		if(Utilities.isNullOrEmpty(username)) {
+		if(Utilities.isNullOrBlank(username)) {
 			return new ResponseEntity<>(reqUserDvo, HttpStatus.NO_CONTENT);
 		}
 		logger.info(String.format("-- The user %s has been updated --", username));

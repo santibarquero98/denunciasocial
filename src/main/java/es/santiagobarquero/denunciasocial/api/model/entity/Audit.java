@@ -1,11 +1,15 @@
 package es.santiagobarquero.denunciasocial.api.model.entity;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import es.santiagobarquero.arch.structureproject.persistence.IEntity;
 
@@ -28,23 +32,27 @@ public class Audit implements IEntity<Object, Audit> {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name = "HOST", length = 15)
+	@Column(name = "HOST", length = 15, nullable = false)
 	private String host;
 	
-	@Column(name = "REQUEST", length = 500)
+	@Column(name = "REQUEST", length = 500, nullable = true)
 	private String request;
 	
-	@Column(name = "RESPONSE", length = 500)
+	@Column(name = "RESPONSE", length = 500, nullable = true)
 	private String response;
 	
-	@Column(name = "URL_SERVICE", length = 100)
+	@Column(name = "URL_SERVICE", length = 100, nullable = false)
 	private String urlService;
 	
-	@Column(name = "STATUS", length = 2)
+	@Column(name = "STATUS", length = 2, nullable = false)
 	private String status;
 	
-	@Column(name = "COMMUNICATION_TYPE", length = 3)
+	@Column(name = "COMMUNICATION_TYPE", length = 3, nullable = false)
 	private String communicationType;
+	
+	@Column(name = "DAT_UP", nullable = false)
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date datUp;
 	
 
 	public Long getId() {
@@ -101,6 +109,14 @@ public class Audit implements IEntity<Object, Audit> {
 
 	public void setStatus(String status) {
 		this.status = status;
+	}
+
+	public Date getDatUp() {
+		return datUp;
+	}
+
+	public void setDatUp(Date datUp) {
+		this.datUp = datUp;
 	}
 
 	@Override

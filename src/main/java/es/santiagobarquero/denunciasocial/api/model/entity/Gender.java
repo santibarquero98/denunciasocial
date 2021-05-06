@@ -1,5 +1,6 @@
 package es.santiagobarquero.denunciasocial.api.model.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -14,9 +15,11 @@ import javax.persistence.Table;
 
 import es.santiagobarquero.arch.structureproject.persistence.IEntity;
 import es.santiagobarquero.denunciasocial.api.dvo.GenderDvo;
+import es.santiagobarquero.denunciasocial.api.dvo.TarantulaDvo;
+import es.santiagobarquero.denunciasocial.auxiliary.ArtroponetConstants;
 
 @Entity
-@Table(name = "TB_GENDER")
+@Table(name = "tb_genders")
 public class Gender implements IEntity<GenderDvo, Gender>{
 	
 	public Gender() {
@@ -28,10 +31,10 @@ public class Gender implements IEntity<GenderDvo, Gender>{
 	@Column(name = "ID_GENDER")
 	private Long idGender;
 	
-	@Column(name = "NAME_GENDER")
+	@Column(name = "NOM_GENDER")
 	private String nameGender;
 	
-	@OneToMany(mappedBy = "id", cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "idTarantula", cascade = CascadeType.ALL,  fetch = FetchType.LAZY)
     private List<Tarantula> tarantulas;
 	
 	public Long getIdGender() {
@@ -66,7 +69,15 @@ public class Gender implements IEntity<GenderDvo, Gender>{
 	@Override
 	public GenderDvo getObjectView(boolean lazy) {
 		GenderDvo genderDvo = new GenderDvo();
-		
+		genderDvo.setIdGender(getIdGender());
+		genderDvo.setNameGender(getNameGender());
+		if(lazy) {
+			List<TarantulaDvo> tarantulasDvo = new ArrayList<>(ArtroponetConstants.ZERO);
+			for(Tarantula t : getTarantulas()) {
+				tarantulasDvo.add(t.getObjectView(lazy));
+			}
+			genderDvo.setTarantulasDvo(tarantulasDvo);
+		}
 		return genderDvo;
 	}
 
