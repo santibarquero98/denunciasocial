@@ -28,7 +28,7 @@ import es.santiagobarquero.denunciasocial.api.dvo.PictureDvo;
 import es.santiagobarquero.denunciasocial.api.service.AuditService;
 import es.santiagobarquero.denunciasocial.api.service.GalleryService;
 import es.santiagobarquero.denunciasocial.api.service.PictureService;
-import es.santiagobarquero.denunciasocial.api.service.UserService;
+import es.santiagobarquero.denunciasocial.api.service.UserServiceImpl;
 import es.santiagobarquero.denunciasocial.auxiliary.Utilities;
 import es.santiagobarquero.denunciasocial.auxiliary.exceptions.NotImplementedException;
 
@@ -40,7 +40,7 @@ public class GalleryRestController implements ProjectRESTemplate<GalleryDvo> {
 	private GalleryService galleryService;
 	
 	@Autowired
-	private UserService userService;
+	private UserServiceImpl userService;
 	
 	@Autowired
 	private AuditService auditService;

@@ -13,6 +13,9 @@ public class TokenDvo implements IDvo<Token, TokenDvo>{
 	
 	@JsonProperty("uuidtoken")
 	private String uuidToken;
+	
+	@JsonProperty("userDvo")
+	private UserDvo userDvo;
 
 	public Long getId() {
 		return id;
@@ -30,11 +33,22 @@ public class TokenDvo implements IDvo<Token, TokenDvo>{
 		return uuidToken;
 	}
 
+	public UserDvo getUserDvo() {
+		return userDvo;
+	}
+
+	public void setUserDvo(UserDvo userDvo) {
+		this.userDvo = userDvo;
+	}
+
 	@Override
 	public Token getEntityObject(boolean lazy) {
 		Token t = new Token();
 		t.setId(getId());
 		t.setUuidToken(getUuidToken());
+		if(lazy) {
+			t.setUser(getUserDvo().getEntityObject(false));
+		}
 		return t;
 	}
 

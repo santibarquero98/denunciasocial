@@ -21,7 +21,7 @@ public class TokenService {
 	// !!!! SERVICE CLASS ONLY CAN INJECT THE REPOSITORY OF THE CLASS REPRESENTED !!!! //
 	
 	@Autowired
-	private UserService userService;
+	private UserServiceImpl userService;
 	
 	public TokenDvo generate(){
 		String uuid = UUID.randomUUID().toString();

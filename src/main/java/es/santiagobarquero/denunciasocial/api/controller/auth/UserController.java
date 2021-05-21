@@ -27,7 +27,7 @@ import es.santiagobarquero.denunciasocial.api.dvo.TokenDvo;
 import es.santiagobarquero.denunciasocial.api.dvo.UserDvo;
 import es.santiagobarquero.denunciasocial.api.service.AuditService;
 import es.santiagobarquero.denunciasocial.api.service.TokenService;
-import es.santiagobarquero.denunciasocial.api.service.UserService;
+import es.santiagobarquero.denunciasocial.api.service.IUserService;
 import es.santiagobarquero.denunciasocial.auxiliary.AppHeaders;
 import es.santiagobarquero.denunciasocial.auxiliary.LogAction;
 import es.santiagobarquero.denunciasocial.auxiliary.Utilities;
@@ -41,7 +41,7 @@ public class UserController implements ProjectRESTemplate<UserDvo> {
     private Logger logger = null;
 	
 	@Autowired
-	private UserService userSrv;
+	private IUserService userSrv;
 	
 	@Autowired
 	private AuditService auditSrv;
