@@ -14,9 +14,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import es.santiagobarquero.arch.structureproject.persistence.IEntity;
+import es.santiagobarquero.artroponet.auxiliary.ArtroponetConstants;
 import es.santiagobarquero.denunciasocial.api.dvo.GenderDvo;
 import es.santiagobarquero.denunciasocial.api.dvo.TarantulaDvo;
-import es.santiagobarquero.denunciasocial.auxiliary.ArtroponetConstants;
 
 @Entity
 @Table(name = "tb_genders")

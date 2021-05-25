@@ -1,4 +1,4 @@
-package es.santiagobarquero.denunciasocial.auxiliary;
+package es.santiagobarquero.artroponet.auxiliary;
 /**
  * Description: LogAction class is a support class for log actions
  * @author santi

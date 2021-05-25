@@ -1,4 +1,4 @@
-package es.santiagobarquero.denunciasocial.auxiliary;
+package es.santiagobarquero.artroponet.auxiliary;
 /**
  * Description: DenunciasocialConstants class is a support class for more use constants in app
  * @author santi

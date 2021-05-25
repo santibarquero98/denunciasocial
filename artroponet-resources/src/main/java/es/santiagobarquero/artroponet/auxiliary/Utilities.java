@@ -1,4 +1,4 @@
-package es.santiagobarquero.denunciasocial.auxiliary;
+package es.santiagobarquero.artroponet.auxiliary;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

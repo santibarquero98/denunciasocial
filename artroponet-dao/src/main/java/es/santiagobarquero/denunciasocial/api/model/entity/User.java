@@ -22,12 +22,12 @@ import javax.persistence.TemporalType;
 import org.slf4j.Logger;
 
 import es.santiagobarquero.arch.structureproject.persistence.IEntity;
+import es.santiagobarquero.artroponet.auxiliary.ArtroponetConstants;
+import es.santiagobarquero.artroponet.auxiliary.LogAction;
+import es.santiagobarquero.artroponet.auxiliary.Utilities;
 import es.santiagobarquero.denunciasocial.api.dvo.GalleryDvo;
 import es.santiagobarquero.denunciasocial.api.dvo.TarantulaDvo;
 import es.santiagobarquero.denunciasocial.api.dvo.UserDvo;
-import es.santiagobarquero.denunciasocial.auxiliary.ArtroponetConstants;
-import es.santiagobarquero.denunciasocial.auxiliary.LogAction;
-import es.santiagobarquero.denunciasocial.auxiliary.Utilities;
 /**
  * User entity persist info about a user
  * 
