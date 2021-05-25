@@ -28,7 +28,7 @@ public class UserHelper implements JUnitHelper<User, UserDvo> {
 		u.setDatUp(new Date());
 		u.setId(1L);
 		u.setName("Eric");
-		u.setPassword("pwd");
+		u.setPassword(Utilities.encryptPassword("pwd"));
 		u.setUsername("eric2000");
 		if(lazy) {
 			u.setToken(TOKEN_HELPER.getMockedObjectEntity(lazy));

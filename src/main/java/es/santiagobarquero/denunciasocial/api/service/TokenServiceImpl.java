@@ -1,5 +1,6 @@
 package es.santiagobarquero.denunciasocial.api.service;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,8 @@ import es.santiagobarquero.denunciasocial.api.dvo.UserDvo;
 import es.santiagobarquero.denunciasocial.api.model.entity.Token;
 import es.santiagobarquero.denunciasocial.api.model.repository.TokenRepository;
 
-@Service
-public class TokenService {
+@Service("tokenService")
+public class TokenServiceImpl implements ITokenService {
 	
 	// !!!! SERVICE CLASS ONLY CAN INJECT THE REPOSITORY OF THE CLASS REPRESENTED !!!! //
 	
@@ -23,6 +24,16 @@ public class TokenService {
 	@Autowired
 	private UserServiceImpl userService;
 	
+	public TokenServiceImpl() {
+		super();
+	}
+
+	public TokenServiceImpl(TokenRepository tokenRepository) {
+		super();
+		this.tokenRepository = tokenRepository;
+	}
+	
+	@Override
 	public TokenDvo generate(){
 		String uuid = UUID.randomUUID().toString();
 		Token token = new Token();
@@ -30,6 +41,7 @@ public class TokenService {
 		return tokenRepository.save(token).getObjectView(false);
 	}
 	
+	@Override
 	public boolean checkTokenUserRelation(String uuidToken, String username) {
 		Token t = tokenRepository.getTokenByUUID(uuidToken);
 		if(t == null) return false;
@@ -40,8 +52,33 @@ public class TokenService {
 		
 	}
 	
-	public void delete(TokenDvo tokenDvo) {
+	@Override
+	public void delete(TokenDvo tokenDvo, boolean flushOnFinish) {
 		tokenRepository.delete(tokenDvo.getEntityObject(false));
+	}
+
+	@Override
+	public List<TokenDvo> getAllsDvo(boolean lazy) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Token> getAllsEntity(boolean lazy) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public TokenDvo create(TokenDvo tokenDvo, boolean lazy, boolean flushOnFinish) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public TokenDvo update(TokenDvo tokenDvo, boolean flushOnFinish) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

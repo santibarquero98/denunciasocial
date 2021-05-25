@@ -23,10 +23,10 @@ import es.santiagobarquero.denunciasocial.auxiliary.LogAction;
 import es.santiagobarquero.denunciasocial.auxiliary.Utilities;
 import es.santiagobarquero.denunciasocial.auxiliary.exceptions.FailLoginException;
 
-@Service
+@Service("userService")
 public class UserServiceImpl implements IUserService {
 
-	private Logger logger = null;
+	private Logger logger = LogAction.getLogger(IUserService.class);
 
 	// !!!! SERVICE CLASS ONLY CAN INJECT THE REPOSITORY OF THE CLASS REPRESENTED
 	// !!!! //
@@ -38,11 +38,15 @@ public class UserServiceImpl implements IUserService {
 	// !!!! //
 
 	@Autowired
-	private TokenService tokenService;
+	private ITokenService tokenService;
 
-	@PostConstruct
-	public void init() {
-		logger = LogAction.getLogger(UserServiceImpl.class);
+	public UserServiceImpl(UserRepository userRepository) {
+		super();
+		this.userRepository = userRepository;
+	}
+	
+	public UserServiceImpl() {
+		super();
 	}
 
 	@Override
@@ -53,7 +57,7 @@ public class UserServiceImpl implements IUserService {
 			logger.info(String.format("-- Login KO for %s --", username));
 			throw new FailLoginException(HttpStatus.NO_CONTENT);
 		}
-
+		
 		boolean okCredentials = BCrypt.checkpw(password, userDvo.getPassword());
 
 		if (okCredentials) {
@@ -67,7 +71,7 @@ public class UserServiceImpl implements IUserService {
 			userDvo = update(userDvo, true);
 			logger.info("-- Token updated --");
 			// Delete the old token
-			tokenService.delete(oldToken);
+			tokenService.delete(oldToken, false);
 			logger.info("-- Old token has been removed --");
 			return userDvo.getTokenDvo();
 		} else {

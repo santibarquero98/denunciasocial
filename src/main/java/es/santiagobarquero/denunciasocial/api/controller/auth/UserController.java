@@ -26,7 +26,7 @@ import es.santiagobarquero.arch.structureproject.applayer.ProjectRESTemplate;
 import es.santiagobarquero.denunciasocial.api.dvo.TokenDvo;
 import es.santiagobarquero.denunciasocial.api.dvo.UserDvo;
 import es.santiagobarquero.denunciasocial.api.service.AuditService;
-import es.santiagobarquero.denunciasocial.api.service.TokenService;
+import es.santiagobarquero.denunciasocial.api.service.TokenServiceImpl;
 import es.santiagobarquero.denunciasocial.api.service.IUserService;
 import es.santiagobarquero.denunciasocial.auxiliary.AppHeaders;
 import es.santiagobarquero.denunciasocial.auxiliary.LogAction;
@@ -47,7 +47,7 @@ public class UserController implements ProjectRESTemplate<UserDvo> {
 	private AuditService auditSrv;
 	
 	@Autowired
-	private TokenService tokenSrv;
+	private TokenServiceImpl tokenSrv;
 	
 	@PostConstruct
 	public void init() {

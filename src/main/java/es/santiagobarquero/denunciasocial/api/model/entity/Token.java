@@ -19,9 +19,16 @@ import es.santiagobarquero.denunciasocial.api.dvo.TokenDvo;
 public class Token implements IEntity<TokenDvo, Token> {
 
 	public Token() {
-		// empty constructor
+		super();
 	}
 	
+	public Token(Long id, String uuidToken, User user) {
+		super();
+		this.id = id;
+		this.uuidToken = uuidToken;
+		this.user = user;
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID_TOKEN")

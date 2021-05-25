@@ -14,7 +14,7 @@ import java.util.Map.Entry;
 
 import org.springframework.security.crypto.bcrypt.BCrypt;
 
-import es.santiagobarquero.denunciasocial.api.service.TokenService;
+import es.santiagobarquero.denunciasocial.api.service.TokenServiceImpl;
 
 public class Utilities {
 
@@ -22,7 +22,7 @@ public class Utilities {
 		// private constructor
 	}
 
-	public static boolean requestIsAuth(Map<String, String> headers, TokenService tokenService) {
+	public static boolean requestIsAuth(Map<String, String> headers, TokenServiceImpl tokenService) {
 		String[] auth = Utilities.findCredentialsInHeader(headers);
 		return tokenService.checkTokenUserRelation(auth[1], auth[0]);
 	}
