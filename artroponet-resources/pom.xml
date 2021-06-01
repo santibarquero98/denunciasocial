@@ -2,19 +2,59 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>es.santiagobarquero</groupId>
-		<artifactId>artroponet</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-	</parent>
+
+	<version>${revision}</version>
+
+	<groupId>es.santiagobarquero</groupId>
 	<artifactId>artroponet-resources</artifactId>
+	<packaging>jar</packaging>
 	<name>artroponet-resources</name>
+
+	<properties>
+		<revision>1.0.0-SNAPSHOT</revision>
+	</properties>
 
 	<dependencies>
 		<dependency>
-			<artifactId>es.santiagobarquero</artifactId>
-			<groupId>artroponet-dao</groupId>
-			<version>0.0.1-SNAPSHOT</version>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-crypto</artifactId>
+			<version>5.3.4.RELEASE</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>1.7.30</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>2.11.2</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>5.2.8.RELEASE</version>
+		</dependency>
+
 	</dependencies>
+
+	<build>
+		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>11</source>
+					<target>11</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
 </project>

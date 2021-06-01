@@ -3,9 +3,9 @@ package es.santiagobarquero.atroponet.test.helpers;
 import java.util.List;
 import java.util.UUID;
 
-import es.santiagobarquero.denunciasocial.api.dvo.TokenDvo;
-import es.santiagobarquero.denunciasocial.api.dvo.UserDvo;
-import es.santiagobarquero.denunciasocial.api.model.entity.Token;
+import es.santiagobarquero.artroponet.model.entity.Token;
+import es.santiagobarquero.artroponet.resources.dvo.TokenDvo;
+import es.santiagobarquero.artroponet.resources.dvo.UserDvo;
 
 public final class TokenHelper implements JUnitHelper<Token, TokenDvo> {
 
@@ -21,7 +21,7 @@ public final class TokenHelper implements JUnitHelper<Token, TokenDvo> {
 		t.setId(1L);
 		t.setUuidToken(UUID.randomUUID().toString());
 		if(lazy) {
-			t.setUser(USER_HELPER.getMockedObjectEntity(lazy));
+			t.setUser(USER_HELPER.getMockedObjectEntity(false));
 		}
 		return t;
 	}
@@ -32,7 +32,7 @@ public final class TokenHelper implements JUnitHelper<Token, TokenDvo> {
 		tDvo.setId(1L);
 		tDvo.setUuidToken(UUID.randomUUID().toString());
 		if(lazy) {
-			tDvo.setUserDvo(new UserDvo());
+			tDvo.setUserDvo(USER_HELPER.getMockedObjectDvo(lazy));
 		}
 		return tDvo;
 	}

@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import es.santiagobarquero.denunciasocial.api.dvo.UserDvo;
-import es.santiagobarquero.denunciasocial.api.model.entity.User;
-import es.santiagobarquero.denunciasocial.auxiliary.ArtroponetConstants;
-import es.santiagobarquero.denunciasocial.auxiliary.Utilities;
+import es.santiagobarquero.artroponet.auxiliary.ArtroponetConstants;
+import es.santiagobarquero.artroponet.auxiliary.Utilities;
+import es.santiagobarquero.artroponet.model.entity.User;
+import es.santiagobarquero.artroponet.resources.dvo.UserDvo;
 
 public class UserHelper implements JUnitHelper<User, UserDvo> {
 
@@ -31,9 +31,9 @@ public class UserHelper implements JUnitHelper<User, UserDvo> {
 		u.setPassword(Utilities.encryptPassword("pwd"));
 		u.setUsername("eric2000");
 		if(lazy) {
-			u.setToken(TOKEN_HELPER.getMockedObjectEntity(lazy));
-			u.setGalleries(GALLERY_HELPER.getMockedListEntity(lazy, defaultSize));
-			u.setTarantulas(TARANTULA_HELPER.getMockedListEntity(lazy, defaultSize));
+			u.setToken(TOKEN_HELPER.getMockedObjectEntity(false));
+			u.setGalleries(GALLERY_HELPER.getMockedListEntity(false, defaultSize));
+			u.setTarantulas(TARANTULA_HELPER.getMockedListEntity(false, defaultSize));
 		}
 		return u;
 	}

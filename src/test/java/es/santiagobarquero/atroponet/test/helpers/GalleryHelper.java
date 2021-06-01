@@ -2,8 +2,8 @@ package es.santiagobarquero.atroponet.test.helpers;
 
 import java.util.List;
 
-import es.santiagobarquero.denunciasocial.api.dvo.GalleryDvo;
-import es.santiagobarquero.denunciasocial.api.model.entity.Gallery;
+import es.santiagobarquero.artroponet.model.entity.Gallery;
+import es.santiagobarquero.artroponet.resources.dvo.GalleryDvo;
 
 public final class GalleryHelper implements JUnitHelper<Gallery, GalleryDvo> {
 	

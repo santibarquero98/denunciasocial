@@ -2,8 +2,8 @@ package es.santiagobarquero.atroponet.test.helpers;
 
 import java.util.List;
 
-import es.santiagobarquero.denunciasocial.api.dvo.TarantulaDvo;
-import es.santiagobarquero.denunciasocial.api.model.entity.Tarantula;
+import es.santiagobarquero.artroponet.model.entity.Tarantula;
+import es.santiagobarquero.artroponet.resources.dvo.TarantulaDvo;
 
 public class TarantulaHelper implements JUnitHelper<Tarantula, TarantulaDvo> {
 

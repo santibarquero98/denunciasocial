@@ -11,24 +11,21 @@
 	</parent>
 	<groupId>es.santiagobarquero</groupId>
 	<artifactId>artroponet</artifactId>
-	<packaging>pom</packaging>
-	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+	<version>${revision}</version>
 	<name>artroponet</name>
 	<description>Backend from Artroponet App</description>
 
-	<modules>
-
-	<module>artroponet-resources</module>
-	<module>artroponet-dao</module>
-	<module>artroponet-business</module>
-	</modules>
+	<!-- <modules> -->
+	<!-- <module>artroponet-resources</module> -->
+	<!-- </modules> -->
 
 	<properties>
 		<java.version>1.11</java.version>
+		<revision>1.0.0-SNAPSHOT</revision>
 	</properties>
 
 	<dependencies>
-		<!-- https://mvnrepository.com/artifact/org.springframework/spring-context -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
@@ -41,6 +38,12 @@
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>es.santiagobarquero</groupId>
+			<artifactId>artroponet-resources</artifactId>
+			<version>${revision}</version>
+			<scope>compile</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -71,10 +74,12 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
 		</dependency>
+
 		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
+			<groupId>org.mariadb.jdbc</groupId>
+			<artifactId>mariadb-java-client</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -96,24 +101,6 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-crypto -->
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-crypto</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.mariadb.jdbc</groupId>
-			<artifactId>mariadb-java-client</artifactId>
-		</dependency>
-
-		<!-- ARCH LIBS REFERENCE -->
-		<dependency>
-			<groupId>es.santiagobarquero</groupId>
-			<artifactId>structureproject</artifactId>
-			<version>1.2-RELEASE</version>
-			<scope>provided</scope>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-io -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-io</artifactId>

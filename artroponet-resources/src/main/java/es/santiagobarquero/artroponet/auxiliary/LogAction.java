@@ -1,11 +1,8 @@
 package es.santiagobarquero.artroponet.auxiliary;
-/**
- * Description: LogAction class is a support class for log actions
- * @author santi
- * LogAction.java
- */
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+
 
 public class LogAction {
 	

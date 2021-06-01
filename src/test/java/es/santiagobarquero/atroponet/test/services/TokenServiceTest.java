@@ -2,38 +2,37 @@ package es.santiagobarquero.atroponet.test.services;
 
 import java.util.UUID;
 
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import es.santiagobarquero.artroponet.dvo.converters.TokenConverter;
+import es.santiagobarquero.artroponet.model.entity.Token;
+import es.santiagobarquero.artroponet.model.repository.TokenRepository;
+import es.santiagobarquero.artroponet.resources.dvo.TokenDvo;
+import es.santiagobarquero.artroponet.resources.dvo.UserDvo;
+import es.santiagobarquero.artroponet.service.IUserService;
+import es.santiagobarquero.artroponet.service.UserServiceImpl;
 import es.santiagobarquero.atroponet.test.helpers.TokenHelper;
 import es.santiagobarquero.atroponet.test.helpers.UserHelper;
-import es.santiagobarquero.denunciasocial.api.dvo.TokenDvo;
-import es.santiagobarquero.denunciasocial.api.dvo.UserDvo;
-import es.santiagobarquero.denunciasocial.api.model.entity.Token;
-import es.santiagobarquero.denunciasocial.api.model.entity.User;
-import es.santiagobarquero.denunciasocial.api.model.repository.TokenRepository;
-import es.santiagobarquero.denunciasocial.api.service.IUserService;
 import junit.framework.TestCase;
 
-@SuppressWarnings("deprecation")
 @RunWith(SpringRunner.class)
 public class TokenServiceTest extends TestCase implements ITokenServiceTest {
 
 	@MockBean
 	private TokenRepository tokenRepository;
 	
-	@MockBean
-	private IUserService userService;
+	private UserServiceImpl userService = new UserServiceImpl();
 
 	private TokenHelper tokenHelper;
 	private UserHelper userHelper;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		tokenHelper = new TokenHelper();
 		userHelper = new UserHelper();
@@ -55,8 +54,8 @@ public class TokenServiceTest extends TestCase implements ITokenServiceTest {
 		
 		Token token = new Token();
 		token.setUuidToken(uuid);
-		TokenDvo tokenDvo = tokenRepository.save(token).getObjectView(false);
-		
+		TokenDvo tokenDvo = TokenConverter.getObjectView(token, false);
+	
 		assertEquals(uuid, tokenDvo.getUuidToken());
 		
 	}
@@ -68,17 +67,15 @@ public class TokenServiceTest extends TestCase implements ITokenServiceTest {
 		Token mockToken = new Token(1L, uuid, userHelper.getMockedObjectEntity(false));
 		Mockito.when(tokenRepository.getTokenByUUID(Matchers.anyString())).thenReturn(mockToken);
 		UserDvo mockUserDvo = new UserDvo();
-		mockUserDvo.setTokenDvo(mockToken.getObjectView(false));
+		mockUserDvo.setTokenDvo(TokenConverter.getObjectView(mockToken, false));
 		Mockito.when(userService.findUserByUsername(Matchers.anyString())).thenReturn(mockUserDvo);
 		
 		String uuidToken = uuid;
 		String username = "eric2000";
 		Token t = tokenRepository.getTokenByUUID(uuidToken);
 		UserDvo uDvo = userService.findUserByUsername(username);
-		TokenDvo tDvo = t.getObjectView(false);
+		TokenDvo tDvo = TokenConverter.getObjectView(t, false);
 		assertEquals(uDvo.getTokenDvo().getUuidToken(), tDvo.getUuidToken());
-		
-	
 		
 	}
 
