@@ -89,7 +89,7 @@ public class UserServiceImpl implements IUserService {
 			return null;
 		}
 
-		return UserConverter.getObjectView(user, false);
+		return UserConverter.getObjectView(user, true);
 	}
 
 	@Override

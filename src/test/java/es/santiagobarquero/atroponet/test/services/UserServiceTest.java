@@ -4,9 +4,7 @@ import static org.mockito.Matchers.any;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,7 +13,6 @@ import org.mockito.Mockito;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import es.santiagobarquero.artroponet.auxiliary.ArtroponetConstants;
-import es.santiagobarquero.artroponet.auxiliary.Utilities;
 import es.santiagobarquero.artroponet.auxiliary.exceptions.FailLoginException;
 import es.santiagobarquero.artroponet.dvo.converters.UserConverter;
 import es.santiagobarquero.artroponet.model.entity.User;
@@ -36,57 +33,67 @@ public class UserServiceTest extends TestCase {
 	private TokenHelper tokenHelper;
 	// Helpers (END)
 
-	
 	// Mocks (START)
 	private TokenRepository tokenRepositoryMock = Mockito.mock(TokenRepository.class);
 	private UserRepository userRepositoryMock = Mockito.mock(UserRepository.class);
 	private TokenServiceImpl tokenServiceMock = Mockito.mock(TokenServiceImpl.class);
 	private UserServiceImpl userServiceMock = Mockito.mock(UserServiceImpl.class);
 	// Mocks (END)
-	
+
 	// SERVICE TO TEST (START)
 	private TokenServiceImpl tokenService = new TokenServiceImpl(tokenRepositoryMock, userServiceMock);
 	private UserServiceImpl userService = new UserServiceImpl(userRepositoryMock, tokenServiceMock);
 	// SERVICE TO TEST (END)
-	
+
 	// TODO: implementer the Matchers with any(Object.class)
 	@Before
 	public void setUp() {
 		userHelper = new UserHelper();
 		tokenHelper = new TokenHelper();
 		execMocks();
-		
-		
+
 //		Mockito.when(userRepository.getUserByUsername(any(String.class))).thenReturn(userHelper.getMockedObjectEntity(false));
 //		Mockito.when(userService.findUserByUsername(any(String.class))).thenReturn(userHelper.getMockedObjectDvo(true));
 		/*
-		
-		Mockito.when(userService.update(Matchers.any(UserDvo.class), Matchers.anyBoolean())).thenReturn(userHelper.getMockedObjectDvo(true));
-		Mockito.when(tokenService.generate()).thenReturn(tokenHelper.getMockedObjectDvo(false));
-		Mockito.doNothing().when(tokenService).delete(any((TokenDvo.class)), any(Boolean.class));
-		Mockito.when(userRepository.getOne(any(Long.class))).thenReturn(userHelper.getMockedObjectEntity(false));
-		Mockito.when(userRepository.getUserByUsername(Matchers.anyString())).thenReturn(userHelper.getMockedObjectEntity(false));
-		Mockito.when(userRepository.save(Matchers.any(User.class))).thenReturn(userHelper.getMockedObjectEntity(false));
-		doNothing().when(userRepository).delete(Matchers.any(User.class));
-		Mockito.when(userRepository.save(Matchers.any(User.class))).thenReturn(userHelper.getMockedObjectEntity(false));
-		doNothing().when(userRepository).flush();
-		Mockito.when(userRepository.findAll()).thenReturn(userHelper.getMockedListEntity(false, sizeList));
-		Mockito.when(userRepository.findAll()).thenReturn(userHelper.getMockedListEntity(false, sizeList));
-		Mockito.when(userService.create(Matchers.any(UserDvo.class), any(Boolean.class), any(Boolean.class))).thenReturn(userHelper.getMockedObjectDvo(true));
-		*/
+		 * 
+		 * Mockito.when(userService.update(Matchers.any(UserDvo.class),
+		 * Matchers.anyBoolean())).thenReturn(userHelper.getMockedObjectDvo(true));
+		 * Mockito.when(tokenService.generate()).thenReturn(tokenHelper.
+		 * getMockedObjectDvo(false));
+		 * Mockito.doNothing().when(tokenService).delete(any((TokenDvo.class)),
+		 * any(Boolean.class));
+		 * Mockito.when(userRepository.getOne(any(Long.class))).thenReturn(userHelper.
+		 * getMockedObjectEntity(false));
+		 * Mockito.when(userRepository.getUserByUsername(Matchers.anyString())).
+		 * thenReturn(userHelper.getMockedObjectEntity(false));
+		 * Mockito.when(userRepository.save(Matchers.any(User.class))).thenReturn(
+		 * userHelper.getMockedObjectEntity(false));
+		 * doNothing().when(userRepository).delete(Matchers.any(User.class));
+		 * Mockito.when(userRepository.save(Matchers.any(User.class))).thenReturn(
+		 * userHelper.getMockedObjectEntity(false));
+		 * doNothing().when(userRepository).flush();
+		 * Mockito.when(userRepository.findAll()).thenReturn(userHelper.
+		 * getMockedListEntity(false, sizeList));
+		 * Mockito.when(userRepository.findAll()).thenReturn(userHelper.
+		 * getMockedListEntity(false, sizeList));
+		 * Mockito.when(userService.create(Matchers.any(UserDvo.class),
+		 * any(Boolean.class),
+		 * any(Boolean.class))).thenReturn(userHelper.getMockedObjectDvo(true));
+		 */
 	}
 
-	
 	private void execMocks() {
 		Mockito.when(userRepositoryMock.getUserByUsername(any(String.class))).thenReturn(userHelper.getMockedObjectEntity(true));
 		Mockito.when(tokenServiceMock.generate()).thenReturn(tokenHelper.getMockedObjectDvo(true));
-		
-	}
+		Mockito.when(userRepositoryMock.save(any(User.class))).thenReturn(userHelper.getMockedObjectEntity(true));
+		Mockito.when(userRepositoryMock.getOne(any(Long.class))).thenReturn(userHelper.getMockedObjectEntity(false));
+		Mockito.when(userRepositoryMock.findAll()).thenReturn(userHelper.getMockedListEntity(false, 5));
 
+	}
 
 	@Test
 	public void doLogin() {
-		String username = "Eric";
+		String username = "eric2000";
 		String pwd = "pwd";
 		UserDvo userDvo = null;
 		try {
@@ -97,33 +104,38 @@ public class UserServiceTest extends TestCase {
 		assertEquals(username, userDvo.getUsername());
 	}
 
-	
 	@Test
-	public void createNewUser() {
+	public void createNewUserWithoutToken() {
 		UserDvo userDvo = userHelper.getMockedObjectDvo(false);
-		userDvo.setActive(userDvo.getActive());
-		userDvo.setPassword(Utilities.encryptPassword(userDvo.getPassword()));
-		userDvo.setTokenDvo(tokenService.generate());
+		UserDvo userCreated = null;
 		try {
-			userDvo.setDatUp(Utilities.dateToString(new Date(), ArtroponetConstants.STANDARD_PROJECT_DATE));
-		} catch (ParseException e) {
+			userCreated = userService.createNewUser(userDvo, false);
+		} catch (ParseException e1) {
 			fail("An ParseException has been ocurred");
 		}
-		UserDvo userCreated = userService.create(userDvo, true, false);
 		assertEquals(userDvo.getUsername(), userCreated.getUsername());
 	}
 
-	
+	@Test
+	public void createNewUserWithToken() {
+		UserDvo userDvo = userHelper.getMockedObjectDvo(false);
+		UserDvo userCreated = null;
+		try {
+			userCreated = userService.createNewUser(userDvo, true);
+		} catch (ParseException e1) {
+			fail("An ParseException has been ocurred");
+		}
+		assertEquals(userDvo.getUsername(), userCreated.getUsername());
+	}
+
 	@Test
 	public void findIt() {
 		Long pk = 1L;
-		User userFinded = userRepositoryMock.getOne(pk);
-		UserDvo userDvo = UserConverter.getObjectView(userFinded, false);
+		UserDvo userDvo = userService.findIt(pk);
 		assertEquals(pk, userDvo.getId());
 
 	}
 
-	
 	@Test
 	public void findUserByUsername() {
 		String username = "Eric";
@@ -132,30 +144,16 @@ public class UserServiceTest extends TestCase {
 
 	}
 
-	
 	@Test
 	public void getAllsDvo() {
-		int sizeList = 10;
-		List<User> allMockedUsers = userRepositoryMock.findAll();
-		List<UserDvo> allMockedUsersDvo = new ArrayList<UserDvo>(ArtroponetConstants.ZERO);
-		for (User uDvo : allMockedUsers) {
-			allMockedUsersDvo.add(UserConverter.getObjectView(uDvo, false));
-		}
-		int expectedSize = sizeList;
-		assertEquals(expectedSize, allMockedUsersDvo.size());
-
+		assertNotNull(userService.getAllsDvo(true));
 	}
 
-	
 	@Test
 	public void getAllsEntity() {
-		int sizeList = 10;
-		List<User> allMockedUsers = userRepositoryMock.findAll();
-		int expectedSize = sizeList;
-		assertEquals(expectedSize, allMockedUsers.size());
+		assertNotNull(userService.getAllsEntity(false));
 	}
 
-	
 //	@Test
 //	public void create() {
 //		UserDvo userDvo = userHelper.getMockedObjectDvo(false);

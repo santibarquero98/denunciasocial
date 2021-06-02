@@ -63,6 +63,10 @@ public class Token {
 		this.user = user;
 	}
 
+	public static Token createNewInstance() {
+		return new Token();
+	}
+
 //	@Override
 //	public TokenDvo getObjectView(boolean lazy) {
 //		TokenDvo tDvo = new TokenDvo();
