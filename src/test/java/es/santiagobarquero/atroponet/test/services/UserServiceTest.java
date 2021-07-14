@@ -154,15 +154,14 @@ public class UserServiceTest extends TestCase {
 		assertNotNull(userService.getAllsEntity(false));
 	}
 
-//	@Test
-//	public void create() {
-//		UserDvo userDvo = userHelper.getMockedObjectDvo(false);
-//		userDvo = userRepositoryMock.save(userDvo.getEntityObject(false)).getObjectView(false);
-//		assertNotNull(userDvo);
-//
-//	}
-//
-//	
+	@Test
+	public void create() {
+		UserDvo uDvo = userHelper.getMockedObjectDvo(false);
+		assertEquals(uDvo, userService.create(uDvo, false, false));
+
+	}
+
+	
 //	@Test
 //	public void update() {
 //		UserDvo userDvo = userHelper.getMockedObjectDvo(false);

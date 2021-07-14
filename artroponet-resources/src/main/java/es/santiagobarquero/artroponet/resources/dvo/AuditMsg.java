@@ -1,5 +1,7 @@
 package es.santiagobarquero.artroponet.resources.dvo;
 
+import es.santiagobarquero.artroponet.resources.enums.CommunicationType;
+
 public class AuditMsg {
 
 	private Long id;
@@ -14,15 +16,17 @@ public class AuditMsg {
 	
 	private String status;
 	
-	private String communicationType;
+	private CommunicationType communicationType;
 	
 	private String datUp;
+	
+	private String description;
 	
 	public AuditMsg() {
 		super();
 	}
 	
-	public AuditMsg(Long id, String host, String request, String response, String urlService, String status, String communicationType, String datUp) {
+	public AuditMsg(Long id, String host, String request, String response, String urlService, String status, CommunicationType communicationType, String datUp, String description) {
 		super();
 		this.id = id;
 		this.host = host;
@@ -32,6 +36,7 @@ public class AuditMsg {
 		this.status = status;
 		this.communicationType = communicationType;
 		this.datUp = datUp;
+		this.description = description;
 	}
 
 	public Long getId() {
@@ -82,11 +87,11 @@ public class AuditMsg {
 		this.status = status;
 	}
 
-	public String getCommunicationType() {
+	public CommunicationType getCommunicationType() {
 		return communicationType;
 	}
 
-	public void setCommunicationType(String communicationType) {
+	public void setCommunicationType(CommunicationType communicationType) {
 		this.communicationType = communicationType;
 	}
 
@@ -96,6 +101,14 @@ public class AuditMsg {
 
 	public void setDatUp(String datUp) {
 		this.datUp = datUp;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public static AuditMsg createNewInstance() {

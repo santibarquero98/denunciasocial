@@ -19,13 +19,22 @@ public class Utilities {
 	private Utilities() {
 		// private constructor
 	}
-
-
-//	public static boolean requestIsAuth(Map<String, String> headers, TokenServiceImpl tokenService) {
-	public static boolean requestIsAuth(Map<String, String> headers) {
-//		String[] auth = Utilities.findCredentialsInHeader(headers);
-//		return tokenService.checkTokenUserRelation(auth[1], auth[0]);
-		return false;
+	
+	public static String[] findCredentialsInHeader(Map<String, String> headers) {
+		String[] result = new String[2];
+		for(Entry<String, String> entry : headers.entrySet()) {
+			String key = entry.getKey();
+			String value = entry.getValue();
+			if(AppHeaders.HUSERNAME_HEADER.equals(key)) {
+				result[0] = value;
+				continue;
+			}
+			if(AppHeaders.HTOKEN_HEADER.equals(key)) {
+				result[1] = value;
+				break;
+			}
+		}
+		return result;
 	}
 	
 	public static boolean isNullOrBlank(String str) {
@@ -51,23 +60,6 @@ public class Utilities {
 	// yyyy-MM-dd HH:mm:ss.SSS
 	public static String dateToString(Date datUp, String format) throws ParseException {
 		return new SimpleDateFormat(format).format(datUp);
-	}
-	
-	private static String[] findCredentialsInHeader(Map<String, String> headers) {
-		String[] result = new String[2];
-		for(Entry<String, String> entry : headers.entrySet()) {
-			String key = entry.getKey();
-			String value = entry.getValue();
-			if(AppHeaders.HUSERNAME_HEADER.equals(key)) {
-				result[0] = value;
-				continue;
-			}
-			if(AppHeaders.HTOKEN_HEADER.equals(key)) {
-				result[1] = value;
-				break;
-			}
-		}
-		return result;
 	}
 
 }

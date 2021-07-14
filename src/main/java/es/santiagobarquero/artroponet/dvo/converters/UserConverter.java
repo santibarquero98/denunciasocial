@@ -40,7 +40,7 @@ public final class UserConverter {
 			}
 		} catch (ParseException e) {
 			Logger logger = LogAction.getLogger(User.class);
-			logger.info(String.format("Error to convert stringToDate: -> %s", e.getLocalizedMessage()), e);
+			logger.error(String.format("Error to convert stringToDate: -> %s", e.getLocalizedMessage()), e);
 			logger = null;
 		}
 		
@@ -73,7 +73,24 @@ public final class UserConverter {
 	}
 
 	public static User getObjectEntity(UserDvo userDvo, boolean lazy) {
-		// TODO Auto-generated method stub
-		return null;
+		User user = new User();
+		user.setActive(userDvo.getActive());
+		try {
+			user.setDatUp(Utilities.stringToDate(userDvo.getDatUp(), ArtroponetConstants.STANDARD_PROJECT_DATE));
+		} catch (ParseException e) {
+			Logger logger = LogAction.getLogger(User.class);
+			logger.error(String.format("Error to convert stringToDate: -> %s", e.getLocalizedMessage()), e);
+			logger = null;
+		}
+		user.setId(userDvo.getId());
+		user.setName(userDvo.getName());
+		user.setPassword(userDvo.getPassword());
+		user.setUsername(userDvo.getUsername());
+		if(lazy) {
+			user.setGalleries(GalleryConverter.getObjectEntity(userDvo.getGalleriesDvo(), false));
+			user.setTarantulas(TarantulaConverter.getObjectEntity(userDvo.getTarantulasDvo(), false));
+			user.setToken(TokenConverter.getObjectEntity(userDvo.getTokenDvo(), false));
+		}
+		return user;
 	}
 }

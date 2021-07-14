@@ -23,7 +23,7 @@ import javax.persistence.TemporalType;
 public class Audit {
 	
 	public Audit() {
-		// empty constructor
+		super();
 	}
 	
 	@Id
@@ -51,6 +51,9 @@ public class Audit {
 	@Column(name = "DAT_UP", nullable = false)
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date datUp;
+	
+	@Column(name = "DESCRIPTION")
+	private String description;
 	
 
 	public Long getId() {
@@ -116,8 +119,15 @@ public class Audit {
 	public void setDatUp(Date datUp) {
 		this.datUp = datUp;
 	}
-
 	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	public static Audit createNewInstance() {
 		return new Audit();
 	}

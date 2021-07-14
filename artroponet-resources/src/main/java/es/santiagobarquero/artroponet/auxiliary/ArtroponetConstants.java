@@ -16,4 +16,8 @@ public class ArtroponetConstants {
 	// DATE PATTERNS
 	public static final String STANDARD_PROJECT_DATE = "yyyy-MM-dd HH:mm:ss.SSS";
 	
+	// LITERALS
+	public static final String OK = "OK";
+	public static final String KO = "KO";
+	
 }

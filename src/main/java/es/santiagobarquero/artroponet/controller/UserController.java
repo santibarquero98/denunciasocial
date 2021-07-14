@@ -58,7 +58,7 @@ public class UserController implements IProjectRESTemplate<UserDvo> {
 		String hostname = inetSocket.getHostName();
 		if(!Utilities.isNullOrBlank(hostname)) {
 			try {
-				auditSrv.auditGetRequest(hostname, "/rest/user/", true);
+				auditSrv.auditGetRequest(hostname, "/rest/user/", hostname, null, hostname, true);
 			} catch (NotImplementedException e) {
 				return HttpStatus.INTERNAL_SERVER_ERROR;
 			}
@@ -108,7 +108,7 @@ public class UserController implements IProjectRESTemplate<UserDvo> {
 		try {
 			userSrv.createNewUser(reqUserDvo, Boolean.TRUE);
 		} catch (ParseException e) {
-			logger.info(String.format("Error to convert stringToDate: -> %s", e.getLocalizedMessage()), e);
+			logger.error(String.format("Error to convert stringToDate: -> %s", e.getLocalizedMessage()), e);
 			return HttpStatus.INTERNAL_SERVER_ERROR;
 		}
 		logger.info("-- Created --");

@@ -1,11 +1,13 @@
 package es.santiagobarquero.artroponet.service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import es.santiagobarquero.artroponet.auxiliary.Utilities;
 import es.santiagobarquero.artroponet.dvo.converters.TokenConverter;
 import es.santiagobarquero.artroponet.model.entity.Token;
 import es.santiagobarquero.artroponet.model.repository.TokenRepository;
@@ -57,6 +59,12 @@ public class TokenServiceImpl implements ITokenService {
 	@Override
 	public void delete(TokenDvo tokenDvo, boolean flushOnFinish) {
 		tokenRepository.delete(TokenConverter.getObjectEntity(tokenDvo, false));
+	}
+
+	@Override
+	public boolean requestIsAuth(Map<String, String> headers) {
+		String[] auth = Utilities.findCredentialsInHeader(headers);
+		return checkTokenUserRelation(auth[1], auth[0]);
 	}
 
 	@Override

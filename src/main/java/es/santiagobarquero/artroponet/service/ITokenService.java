@@ -1,6 +1,7 @@
 package es.santiagobarquero.artroponet.service;
 
 import java.util.List;
+import java.util.Map;
 
 import es.santiagobarquero.artroponet.model.entity.Token;
 import es.santiagobarquero.artroponet.resources.dvo.TokenDvo;
@@ -20,5 +21,7 @@ public interface ITokenService {
 	TokenDvo update(TokenDvo tokenDvo, boolean flushOnFinish);
 	
 	void delete(TokenDvo tokenDvo, boolean flushOnFinish);
+
+	boolean requestIsAuth(Map<String, String> headers);
 	
 }

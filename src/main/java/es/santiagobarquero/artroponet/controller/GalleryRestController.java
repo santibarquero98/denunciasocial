@@ -24,7 +24,6 @@ import org.springframework.web.servlet.function.EntityResponse;
 
 import es.santiagobarquero.artroponet.auxiliary.Utilities;
 import es.santiagobarquero.artroponet.auxiliary.exceptions.NotImplementedException;
-import es.santiagobarquero.artroponet.controller.IProjectRESTemplate;
 import es.santiagobarquero.artroponet.resources.dvo.GalleryDvo;
 import es.santiagobarquero.artroponet.resources.dvo.PictureDvo;
 import es.santiagobarquero.artroponet.service.IAuditService;
@@ -61,7 +60,7 @@ public class GalleryRestController implements IProjectRESTemplate<GalleryDvo> {
 		String hostname = inetSocket.getHostName();
 		if(!Utilities.isNullOrBlank(hostname)) {
 			try {
-				auditService.auditGetRequest(hostname, "/getbyuser/{id}", true);
+				auditService.auditGetRequest(hostname, "/rest/gallery/", null, HttpStatus.OK, null, true);
 			} catch (NotImplementedException e) {
 				return HttpStatus.INTERNAL_SERVER_ERROR;
 			}
